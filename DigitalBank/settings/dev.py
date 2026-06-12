@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'accounts.User'
+
 
 # Application definition
 
@@ -37,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'accounts',
+    'banking'
 ]
 
 MIDDLEWARE = [
@@ -77,10 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'digital_bank',
-        'USER' : 'root',
-        'PASSWORD' : 'samidsamid',
-        'HOST' : 'localhost',
-        'PORT' : '3306'
+        'USER': 'root',
+        'PASSWORD': 'samidsamid',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 

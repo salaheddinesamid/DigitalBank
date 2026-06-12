@@ -32,3 +32,9 @@ class Customer(models.Model):
     phone = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        unique=True
+    )
