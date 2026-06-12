@@ -16,6 +16,7 @@ from rest_framework import status
 from .serializers.new_account_serializer import NewAccountSerializer
 from .serializers.account_opening_serializer import AccountOpeningRequestSerializer
 from .services.new_account_service import create_new_account
+from .models import AccountOpeningRequest
 
 
 class AccountCreationView(APIView):
@@ -41,4 +42,20 @@ class AccountCreationView(APIView):
         return Response(
             response_serializer.data,
             status=status.HTTP_201_CREATED
+        )
+
+class AccountRequestList(APIView):
+    def get(self, request):
+        opening_requests = AccountOpeningRequest.objects.filter(
+            status="PENDING"
+        )
+
+        serializer = AccountOpeningRequestSerializer(
+            opening_requests,
+            many=True
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
         )
