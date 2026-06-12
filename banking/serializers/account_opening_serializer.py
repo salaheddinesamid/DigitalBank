@@ -3,5 +3,6 @@ from ..models import AccountOpeningRequest
 
 
 class AccountOpeningRequestSerializer(serializers.ModelSerializer):
-    model = AccountOpeningRequest
-    fields = '__all__'
+    class Meta:
+        model = AccountOpeningRequest
+        fields = '__all__'
