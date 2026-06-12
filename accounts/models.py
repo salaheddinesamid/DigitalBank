@@ -1,3 +1,33 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 # Create your models here.
+
+
+class UserStatus(models.TextChoices):
+    ACTIVE = "ACTIVE", "Active"
+    INACTIVE = "INACTIVE", "Inactive"
+    SUSPENDED = "SUSPENDED", "Suspended"
+    PENDING = "PENDING", "Pending Verification"
+
+
+class User(AbstractUser):
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=UserStatus.choices,
+        default=UserStatus.PENDING
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Customer(models.Model):
+    first_name = models.CharField(max_length=200, null=True)
+    last_name = models.CharField(max_length=200, null=True)
+    phone = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
