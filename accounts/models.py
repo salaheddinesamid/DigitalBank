@@ -28,6 +28,7 @@ class User(AbstractUser):
 class Customer(models.Model):
     first_name = models.CharField(max_length=200, null=True)
     last_name = models.CharField(max_length=200, null=True)
+    CIN = models.CharField(max_length=200, unique=True, null=False, default=None)
     phone = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
