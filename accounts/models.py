@@ -12,6 +12,19 @@ class UserStatus(models.TextChoices):
     PENDING = "PENDING", "Pending Verification"
 
 
+class RoleNames(models.TextChoices):
+    CUSTOMER = "CUSTOMER", "Customer",
+    BANKER = "BANKER", "Banker",
+    ADMIN = "ADMIN", "Admin"
+
+
+class Role(models.Model):
+    role_name = models.CharField(
+        max_length=200,
+        choices=RoleNames.choices
+    )
+
+
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
@@ -23,6 +36,11 @@ class User(AbstractUser):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    roles=models.ManyToManyField(
+        Role,
+        related_name='users',
+        blank=True
+    )
 
 
 class Customer(models.Model):
