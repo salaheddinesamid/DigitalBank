@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .views import AccountCreationView, AccountRequestList, AccountOpeningRequestUpdate
+from .views import AccountCreationView, AccountRequestList, AccountOpeningRequestUpdate, AccountDetailView
 
 urlpatterns = [
     path('accounts/new', AccountCreationView.as_view()),
+    path('accounts/get', AccountDetailView.as_view()),
     path('accounts/requests/get_all', AccountRequestList.as_view()),
     path('accounts/requests/update/<int:pk>', AccountOpeningRequestUpdate.as_view())
 ]

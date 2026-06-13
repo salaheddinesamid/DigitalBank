@@ -15,8 +15,9 @@ from rest_framework import status
 from .serializers.new_account_serializer import NewAccountSerializer
 from .serializers.account_opening_serializer import AccountOpeningRequestSerializer, NewAccountSerializer
 from .services.new_account_service import create_new_account
+from .serializers.customer_account_serializer import CustomerAccountSerializer
 from .services.account_approval_service import approve_account_opening_request
-from .models import AccountOpeningRequest
+from .models import AccountOpeningRequest, BankAccount
 
 
 class AccountCreationView(APIView):
@@ -78,5 +79,22 @@ class AccountRequestList(APIView):
 
         return Response(
             serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+
+class AccountDetailView(APIView):
+
+    def get(self, request):
+
+        account_number = request.query_params.get('number')
+        account = BankAccount.objects.select_related('customer').get(
+            account_number=account_number
+        )
+
+        serializer = CustomerAccountSerializer(account)
+
+        return Response(
+            data=serializer.data,
             status=status.HTTP_200_OK
         )
