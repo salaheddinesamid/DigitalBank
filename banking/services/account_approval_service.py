@@ -1,5 +1,5 @@
 from ..models import AccountOpeningRequest, BankAccount
-from accounts.models import User, Customer
+from accounts.models import User, Customer, Role
 from ..utils.account_number_generator import generate_account_number
 from ..utils.user_credentials_generator import generate_user_credentials
 from django.db import transaction
@@ -31,6 +31,13 @@ def approve_account_opening_request(request_id):
     new_user = User.objects.create(
         username=user_credentials['username']
     )
+
+    # Fetch the customer role from DB:
+    customer_role = Role.objects.get(
+        role_name="CUSTOMER"
+    )
+    # Add the customer role to the user:
+    new_user.roles.add(customer_role)
 
     # Set a hashed password to the user
     new_user.set_password(
