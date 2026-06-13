@@ -6,7 +6,6 @@ from .services.new_account_service import create_new_account
 from rest_framework.response import Response
 from rest_framework import status
 
-
 # Create your views here.
 
 from rest_framework.views import APIView
@@ -14,15 +13,15 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers.new_account_serializer import NewAccountSerializer
-from .serializers.account_opening_serializer import AccountOpeningRequestSerializer
+from .serializers.account_opening_serializer import AccountOpeningRequestSerializer, NewAccountSerializer
 from .services.new_account_service import create_new_account
+from .services.account_approval_service import approve_account_opening_request
 from .models import AccountOpeningRequest
 
 
 class AccountCreationView(APIView):
 
     def post(self, request):
-
         serializer = NewAccountSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -43,6 +42,20 @@ class AccountCreationView(APIView):
             response_serializer.data,
             status=status.HTTP_201_CREATED
         )
+
+
+class AccountOpeningRequestUpdate(APIView):
+
+    def post(self, request, pk):
+        banking_account = approve_account_opening_request(
+            request_id=pk
+        )
+        serializer = NewAccountSerializer(banking_account)
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_200_OK
+        )
+
 
 class AccountRequestList(APIView):
     def get(self, request):
