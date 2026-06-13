@@ -47,14 +47,22 @@ class AccountCreationView(APIView):
 class AccountOpeningRequestUpdate(APIView):
 
     def post(self, request, pk):
-        banking_account = approve_account_opening_request(
-            request_id=pk
-        )
-        serializer = NewAccountSerializer(banking_account)
-        return Response(
-            data=serializer.data,
-            status=status.HTTP_200_OK
-        )
+        try:
+            banking_account = approve_account_opening_request(
+                request_id=pk
+            )
+            serializer = NewAccountSerializer(banking_account)
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_200_OK
+            )
+        except ValueError:
+            return Response(
+                data={
+                    'error' : 'This opening request may have already been accepted or rejected'
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class AccountRequestList(APIView):
