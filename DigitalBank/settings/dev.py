@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django_extensions',
+    'drf_spectacular',
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
     'rest_framework',
@@ -133,4 +135,12 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Digital Bank API',
+    'DESCRIPTION': 'Banking API Documentation',
+    'VERSION': '1.0.0',
 }
