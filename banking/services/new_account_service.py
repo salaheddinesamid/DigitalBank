@@ -1,5 +1,5 @@
 from ..models import AccountOpeningRequest
-from accounts.models import Customer
+from customer_management.models import Customer
 from django.db import transaction
 
 

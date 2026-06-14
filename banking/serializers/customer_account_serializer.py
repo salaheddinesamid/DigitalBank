@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ..models import BankAccount
-from accounts.models import Customer
+from customer_management.models import Customer
 
 
 class CustomerDetailsSerializer(serializers.ModelSerializer):

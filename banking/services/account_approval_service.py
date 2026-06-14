@@ -1,5 +1,5 @@
 from ..models import AccountOpeningRequest, BankAccount
-from accounts.models import User, Customer, Role
+from customer_management.models import User, Customer, Role
 from ..utils.account_number_generator import generate_account_number
 from ..utils.user_credentials_generator import generate_user_credentials
 from django.db import transaction

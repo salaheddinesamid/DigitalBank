@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('accounts', '0002_customer_cin_customer_user'),
+        ('customer_management', '0002_customer_cin_customer_user'),
     ]
 
     operations = [
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(choices=[('PENDING', 'Pending'), ('APPROVED', 'Approved'), ('REJECTED', 'Rejected')], default='PENDING', max_length=20)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('reviewed_at', models.DateTimeField(blank=True, null=True)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.customer')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='customer_management.customer')),
             ],
         ),
         migrations.CreateModel(
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(choices=[('CURRENT', 'Current'), ('SAVING', 'Saving')], default='CURRENT', max_length=100)),
                 ('status', models.CharField(choices=[('ACTIVE', 'Active'), ('INACTIVE', 'Inactive')], default='INACTIVE', max_length=200)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('customer', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='accounts.customer')),
+                ('customer', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='customer_management.customer')),
             ],
         ),
     ]
