@@ -43,23 +43,20 @@ class AccountTransactionViewSet(ViewSet):
     @action(detail=False, methods=["patch"])
     def withdraw(self, request):
         try:
-            account_number = request.query_params.get('account_number')
-            amount = int(request.query_params.get('amount'))
-
-            saved_account = make_withdraw(
-                account_number=account_number,
-                amount=amount
+            data = TransactionSerializer(
+                data=request    .data
             )
 
-            serializer = NewAccountDetailsSerializer(saved_account)
-
-            return Response(
-                data=serializer.data,
-                status=status.HTTP_200_OK
-            )
-
+            if data.is_valid():
+                saved_account = make_withdraw(
+                    validate_data=data.validated_data
+                )
+                serializer = NewAccountDetailsSerializer(saved_account)
+                return Response(
+                    data=serializer.data,
+                    status=status.HTTP_200_OK
+                )
         except ValueError as e:
-
             return Response(
                 data={
                     "error": str(e)
