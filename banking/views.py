@@ -60,7 +60,7 @@ class AccountOpeningRequestUpdate(APIView):
         except ValueError:
             return Response(
                 data={
-                    'error' : 'This opening request may have already been accepted or rejected'
+                    'error': 'This opening request may have already been accepted or rejected'
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -86,7 +86,6 @@ class AccountRequestList(APIView):
 class AccountDetailView(APIView):
 
     def get(self, request):
-
         account_number = request.query_params.get('number')
         account = BankAccount.objects.select_related('customer').get(
             account_number=account_number
