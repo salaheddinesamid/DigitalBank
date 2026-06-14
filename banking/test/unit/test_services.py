@@ -1,32 +1,17 @@
 from django.test import TestCase
 from banking.models import AccountOpeningRequest, BankAccount
-from accounts.models import Customer, User
+from customer_management.models import Customer, User
 from banking.services.account_approval_service import approve_account_opening_request
+from banking.services.deposit_service import make_deposit
+from .base_banking_test_case import BaseBankingTestCase
 
 
-class ApproveAccountOpeningRequestServiceTest(TestCase):
-
-    def setUp(self):
-
-        self.customer = Customer.objects.create(
-            first_name="John",
-            last_name="Doe",
-            CIN="BK123",
-            phone="0600000000",
-            address="Casa"
-        )
-
-        self.request_obj = AccountOpeningRequest.objects.create(
-            customer=self.customer,
-            account_type="SAVINGS",
-            status="PENDING"
-        )
+class ApproveAccountOpeningRequestServiceTest(BaseBankingTestCase):
 
     def test_approve_request_creates_account_and_user(self):
-
         result = approve_account_opening_request(self.request_obj.id)
 
-        # 🔄 Refresh from DB
+        # Refresh from DB
         self.request_obj.refresh_from_db()
 
         # 1. Request status updated
@@ -54,3 +39,25 @@ class ApproveAccountOpeningRequestServiceTest(TestCase):
 
         # 5. Service returns something
         self.assertIsNotNone(result)
+
+
+class BankAccountDepositTest(BaseBankingTestCase):
+
+    def setUp(self):
+        super().setUp()
+
+        approve_account_opening_request(self.request_obj.id)
+
+        self.account = BankAccount.objects.get(
+            customer=self.customer
+        )
+
+    def test_make_deposit(self):
+        make_deposit(
+            account_number=self.account.account_number,
+            amount=500
+        )
+
+        self.account.refresh_from_db()
+
+        self.assertEqual(self.account.balance, 500)
