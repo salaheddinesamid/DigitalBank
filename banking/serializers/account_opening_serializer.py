@@ -8,7 +8,7 @@ class AccountOpeningRequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class NewAccountSerializer(serializers.ModelSerializer):
+class NewAccountDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccount
         fields = '__all__'
