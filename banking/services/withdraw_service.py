@@ -1,0 +1,28 @@
+from ..models import BankAccount
+from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
+from customer_management.exceptions.inactive_account_exception import InactiveBankAccountException
+from django.db import transaction
+
+
+def make_withdraw(account_number, amount):
+    if amount < 0:
+        raise ValueError("Please enter a positive value")
+
+    with transaction.atomic():
+        bank_account = BankAccount.objects.select_for_update().get(
+            account_number=account_number
+        )
+
+        # If the account is inactive, raise an exception
+        if bank_account.status == "INACTIVE":
+            raise InactiveBankAccountException('This account is inactive, please activate your account and try again')
+
+        # If the account is out of balance, raise an exception
+        if amount > bank_account.balance:
+            raise InsufficientBalanceException('Insufficient balance, please try again')
+
+        # Otherwise, update:
+        bank_account.balance -= amount
+        bank_account.save()
+
+    return bank_account

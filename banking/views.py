@@ -18,7 +18,10 @@ from .services.new_account_service import create_new_account
 from .serializers.customer_account_serializer import CustomerAccountSerializer
 from .services.account_approval_service import approve_account_opening_request
 from .services.deposit_service import make_deposit
+from .services.withdraw_service import make_withdraw
 from .models import AccountOpeningRequest, BankAccount
+from .exceptions.insufficent_balance_exception import InsufficientBalanceException
+from customer_management.exceptions.inactive_account_exception import InactiveBankAccountException
 
 
 class AccountCreationView(APIView):
@@ -118,6 +121,42 @@ class BankAccountDepositView(APIView):
                 status=status.HTTP_200_OK
             )
         except ValueError as e:
+            return Response(
+                data={
+                    "error": str(e)
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+class BankAccountWithdrawView(APIView):
+
+    def patch(self, request):
+        try:
+            account_number = request.query_params.get('account_number')
+            amount = int (request.query_params.get('amount'))
+
+            saved_account = make_withdraw(
+                account_number=account_number,
+                amount=amount
+            )
+
+            serializer = NewAccountDetailsSerializer(saved_account)
+
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_200_OK
+            )
+
+        except ValueError as e:
+
+            return Response(
+                data={
+                    "error": str(e)
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except InsufficientBalanceException as e:
             return Response(
                 data={
                     "error": str(e)
