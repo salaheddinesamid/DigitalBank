@@ -20,8 +20,8 @@ from django.urls import path
 from .views import AccountCreationView, AccountRequestList, AccountOpeningRequestUpdate, AccountDetailView
 
 urlpatterns = [
-    path('customer_management/new', AccountCreationView.as_view()),
-    path('customer_management/get', AccountDetailView.as_view()),
-    path('customer_management/requests/get_all', AccountRequestList.as_view()),
-    path('customer_management/requests/update/<int:pk>', AccountOpeningRequestUpdate.as_view())
+    path('accounts/new', AccountCreationView.as_view()),
+    path('accounts/get', AccountDetailView.as_view()),
+    path('accounts/requests/get_all', AccountRequestList.as_view()),
+    path('accounts/requests/update/<int:pk>', AccountOpeningRequestUpdate.as_view())
 ]

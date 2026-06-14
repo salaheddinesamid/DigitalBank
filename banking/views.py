@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers.new_account_serializer import NewAccountSerializer
-from .serializers.account_opening_serializer import AccountOpeningRequestSerializer, NewAccountSerializer
+from .serializers.account_opening_serializer import AccountOpeningRequestSerializer, NewAccountDetailsSerializer
 from .services.new_account_service import create_new_account
 from .serializers.customer_account_serializer import CustomerAccountSerializer
 from .services.account_approval_service import approve_account_opening_request
@@ -52,7 +52,7 @@ class AccountOpeningRequestUpdate(APIView):
             banking_account = approve_account_opening_request(
                 request_id=pk
             )
-            serializer = NewAccountSerializer(banking_account)
+            serializer = NewAccountDetailsSerializer(banking_account)
             return Response(
                 data=serializer.data,
                 status=status.HTTP_200_OK
