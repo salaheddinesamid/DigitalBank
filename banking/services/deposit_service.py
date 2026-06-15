@@ -18,7 +18,7 @@ def make_deposit(validated_data):
         transaction_record = TransactionRecord.objects.create(
             type="DEPOSIT",
             amount=validated_data['amount'],
-            destination_account=BankAccount,
+            destination_account=bank_account,
             status="PENDING"
         )
 
