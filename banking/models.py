@@ -72,3 +72,38 @@ class AccountOpeningRequest(models.Model):
         null=True,
         blank=True
     )
+
+
+class TransactionType(models.TextChoices):
+    DEPOSIT = "DEPOSIT", "Deposit"
+    WITHDRAW = "WITHDRAW", "Withdraw"
+    TRANSFER = "TRANSFER", "Transfer"
+
+
+class TransactionStatus(models.TextChoices):
+    PENDING = "PENDING", "Pending"
+    COMPLETED = "COMPLETED", "Completed"
+    FAILED = "FAILED", "Failed"
+
+
+class TransactionRecord(models.Model):
+    type = models.CharField(
+        max_length=200,
+        choices=TransactionType.choices
+    )
+    amount = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    desc = models.CharField(max_length=200)
+    
+    source_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.CASCADE
+    )
+    destination_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.CASCADE
+    )
+
+    status = models.CharField(
+        choices=TransactionStatus.choices
+    )
