@@ -97,17 +97,20 @@ class TransactionRecord(models.Model):
 
     source_account = models.ForeignKey(
         BankAccount,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
-        blank=True
+        blank=True,
+        related_name="outgoing_transactions"
     )
     destination_account = models.ForeignKey(
         BankAccount,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
-        blank=True
+        blank=True,
+        related_name="incoming_transactions"
     )
 
     status = models.CharField(
+        max_length=200,
         choices=TransactionStatus.choices
     )
