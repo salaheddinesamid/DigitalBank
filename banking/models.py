@@ -94,14 +94,18 @@ class TransactionRecord(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
     desc = models.CharField(max_length=200)
-    
+
     source_account = models.ForeignKey(
         BankAccount,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
     destination_account = models.ForeignKey(
         BankAccount,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
 
     status = models.CharField(
