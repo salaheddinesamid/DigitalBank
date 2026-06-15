@@ -1,4 +1,4 @@
-from ..models import BankAccount
+from ..models import BankAccount, TransactionRecord
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
 from customer_management.exceptions.inactive_account_exception import InactiveBankAccountException
 from django.db import transaction
@@ -24,5 +24,16 @@ def make_withdraw(validate_data):
         # Otherwise, update:
         bank_account.balance -= validate_data['amount']
         bank_account.save()
+
+        # Create transaction record:
+        transaction_record = TransactionRecord.objects.create(
+            type="WITHDRAW",
+            amount=validate_data['amount'],
+            source_account=bank_account,
+            status="PENDING"
+        )
+
+        # Save the transaction record
+        transaction_record.save()
 
     return bank_account
