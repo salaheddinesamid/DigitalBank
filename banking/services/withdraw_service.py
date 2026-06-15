@@ -25,7 +25,7 @@ def make_withdraw(validate_data):
         bank_account.balance -= validate_data['amount']
         bank_account.save()
 
-        # Create transaction record:
+        # Create transaction record for withdraw:
         transaction_record = TransactionRecord.objects.create(
             type="WITHDRAW",
             amount=validate_data['amount'],
