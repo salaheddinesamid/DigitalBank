@@ -21,7 +21,7 @@ from DigitalBank.security.permissions import IsCustomer
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AccountTransactionViewSet(ViewSet):
-    @action(detail=False, methods=["patch"], permission_classes=[IsCustomer])
+    @action(detail=False, methods=["post"], permission_classes=[IsCustomer])
     def deposit(self, request):
         try:
             data = TransactionSerializer(
@@ -47,7 +47,7 @@ class AccountTransactionViewSet(ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    @action(detail=False, methods=["patch"])
+    @action(detail=False, methods=["post"], permission_classes = [IsCustomer])
     def withdraw(self, request):
         try:
             data = TransactionSerializer(
@@ -79,7 +79,7 @@ class AccountTransactionViewSet(ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    @action(detail=False, methods=["post"])
+    @action(detail=False, methods=["post"], permission_classes = [IsCustomer])
     def transfer(self, request):
 
         try:
