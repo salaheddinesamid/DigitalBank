@@ -6,13 +6,19 @@ from django.db import transaction
 
 def make_internal_transfer(validated_data):
     with transaction.atomic():
-        source_account = BankAccount.objects.get(
-            account_number=validated_data['source_account']
-        )
+        try:
+            source_account = BankAccount.objects.get(
+                account_number=validated_data['source_account']
+            )
+        except BankAccount.DoesNotExist:
+            raise ValueError("Source account does not exist")
 
-        destination_account = BankAccount.objects.get(
-            account_number=validated_data['destination_account']
-        )
+        try:
+            destination_account = BankAccount.objects.get(
+                account_number=validated_data['destination_account']
+            )
+        except BankAccount.DoesNotExist:
+            raise ValueError("Destination account does not exist")
 
         # Check if the source account has sufficient balance:
         if source_account.balance < validated_data['amount']:
