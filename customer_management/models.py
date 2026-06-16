@@ -27,7 +27,7 @@ class Role(models.Model):
 
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=False)
 
     status = models.CharField(
         max_length=20,

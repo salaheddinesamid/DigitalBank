@@ -3,6 +3,8 @@ from ..models import BankAccount, TransactionRecord
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
 from django.db import transaction
 
+from ..utils.check_account_limit import check_daily_limit
+
 
 def make_internal_transfer(validated_data):
     with transaction.atomic():
@@ -24,6 +26,7 @@ def make_internal_transfer(validated_data):
         if source_account.balance < validated_data['amount']:
             raise InsufficientBalanceException("The source account has insufficient balance")
 
+        check_daily_limit(customer=source_account.customer, amount=validated_data['amount'], transaction_type="TRANSFER")
         # Decrease the source account's balance
         source_account.balance -= validated_data['amount']
 

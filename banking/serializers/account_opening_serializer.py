@@ -8,6 +8,11 @@ class AccountOpeningRequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AccountStatusUpdateSerializer(serializers.Serializer):
+    status = serializers.CharField()
+    request_id = serializers.IntegerField()
+
+
 class NewAccountDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccount

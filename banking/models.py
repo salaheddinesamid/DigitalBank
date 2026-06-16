@@ -20,7 +20,9 @@ class BankAccount(models.Model):
         max_length=200,
         unique=True
     )
-    balance = models.FloatField(
+    balance = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
         default=0.0
     )
     type = models.CharField(
@@ -103,7 +105,10 @@ class TransactionRecord(models.Model):
         max_length=200,
         choices=TransactionType.choices
     )
-    amount = models.FloatField()
+    amount = models.DecimalField(
+        max_digits=15,
+        decimal_places=2
+    )
     timestamp = models.DateTimeField(auto_now_add=True)
     desc = models.CharField(max_length=200)
 

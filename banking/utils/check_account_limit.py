@@ -9,7 +9,7 @@ def check_daily_limit(customer, amount, transaction_type):
     total_transaction_amount = TransactionRecord.objects.filter(
         source_account__customer=customer,
         type=transaction_type,
-        timestamp__day=today
+        timestamp__date=today
     ).aggregate(
         total=Sum("amount")
     )['total'] or 0
