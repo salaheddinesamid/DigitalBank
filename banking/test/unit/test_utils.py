@@ -37,3 +37,7 @@ class AccountNumberGeneratorTest(TestCase):
         )
 
         self.assertEqual(results, "DGB1SST315730")
+
+
+class TransferLimitUtilsTest(TestCase):
+    pass
