@@ -2,11 +2,17 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import action
 from rest_framework.viewsets import ViewSet
+
+# Import services
 from ..services.deposit_service import make_deposit
 from ..services.withdraw_service import make_withdraw
+from ..services.transfer_service import make_internal_transfer
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
+
+# Import serializers
 from ..serializers.account_opening_serializer import NewAccountDetailsSerializer
-from ..serializers.transaction_serializer import TransactionSerializer
+from ..serializers.transaction_serializer import TransactionSerializer, TransactionDetailSerializer
+from ..serializers.transfer_serializer import TransferSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -48,6 +54,7 @@ class AccountTransactionViewSet(ViewSet):
             )
 
             if data.is_valid():
+
                 saved_account = make_withdraw(
                     validate_data=data.validated_data
                 )
@@ -69,5 +76,40 @@ class AccountTransactionViewSet(ViewSet):
                 data={
                     "error": str(e)
                 },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    @action(detail=False, methods=["post"])
+    def transfer(self, request):
+
+        try:
+            serializer = TransferSerializer(
+                data=request.data
+            )
+
+            serializer.is_valid(raise_exception=True)
+
+            if serializer.validated_data["type"] == "INTERNAL":
+                transfer = make_internal_transfer(
+                    serializer.validated_data
+                )
+
+                response_serializer = TransactionDetailSerializer(
+                    transfer
+                )
+
+                return Response(
+                    response_serializer.data,
+                    status=status.HTTP_201_CREATED
+                )
+
+            return Response(
+                {"error": "Unsupported transfer type"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except ValueError as e:
+            return Response(
+                {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
