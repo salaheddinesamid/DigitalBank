@@ -5,6 +5,7 @@ from rest_framework import status
 
 # import models
 from ..models import BankAccount
+from customer_management.models import Customer, User
 
 # import serializers
 from ..serializers.customer_account_serializer import CustomerAccountSerializer
@@ -20,11 +21,13 @@ from DigitalBank.security.permissions import IsCustomer
 
 class AccountDetailViewSet(ViewSet):
 
-    @action(detail=True, methods=["get"])
+    @action(detail=False, methods=["get"], permission_classes=[IsCustomer])
     def get_details(self, request):
-        account_number = request.query_params.get('number')
+
+        # Fetch the customer
+        user = request.user
         account = BankAccount.objects.select_related('customer').get(
-            account_number=account_number
+            customer__user=user
         )
 
         serializer = CustomerAccountSerializer(account)
