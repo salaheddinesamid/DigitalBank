@@ -61,3 +61,12 @@ class BankAccountDepositTest(BaseBankingTestCase):
         self.account.refresh_from_db()
 
         self.assertEqual(self.account.balance, 500)
+
+
+class TransferServiceTest(BaseBankingTestCase):
+
+    def test_make_internal_service(self):
+        pass
+
+    def test_make_external_service(self):
+        pass
