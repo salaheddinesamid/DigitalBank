@@ -14,6 +14,9 @@ from ..serializers.account_opening_serializer import AccountOpeningRequestSerial
 # import services
 from ..services.new_account_service import create_new_account
 
+# Import permissions
+from DigitalBank.security.permissions import IsCustomer
+
 
 class AccountDetailViewSet(ViewSet):
 
@@ -31,7 +34,7 @@ class AccountDetailViewSet(ViewSet):
             status=status.HTTP_200_OK
         )
 
-    @action(detail=True, methods=["patch"])
+    @action(detail=False, methods=["post"])
     def create_new_account(self, request):
         serializer = NewAccountSerializer(data=request.data)
 
@@ -54,6 +57,6 @@ class AccountDetailViewSet(ViewSet):
             status=status.HTTP_201_CREATED
         )
 
-    @action(detail=True, methods=["patch"])
+    @action(detail=False, methods=["patch"])
     def update_status(self, request):
         pass
