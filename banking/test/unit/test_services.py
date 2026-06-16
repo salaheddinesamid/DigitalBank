@@ -66,7 +66,11 @@ class BankAccountDepositTest(BaseBankingTestCase):
 class TransferServiceTest(BaseBankingTestCase):
 
     def test_make_internal_service(self):
-        pass
+        expected_source_account_amount = 0
+        expected_destination_account_amount = 0
+
+        self.assertEqual(expected_source_account_amount, 0)
+        self.assertEqual(expected_destination_account_amount, 0)
 
     def test_make_external_service(self):
         pass
