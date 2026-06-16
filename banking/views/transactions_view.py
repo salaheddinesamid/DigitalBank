@@ -16,13 +16,14 @@ from ..serializers.transfer_serializer import TransferSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
+from DigitalBank.security.permissions import IsCustomer
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AccountTransactionViewSet(ViewSet):
-    @action(detail=False, methods=["patch"])
+    @action(detail=False, methods=["patch"], permission_classes=[IsCustomer])
     def deposit(self, request):
         try:
-
             data = TransactionSerializer(
                 data=request.data
             )
@@ -50,11 +51,10 @@ class AccountTransactionViewSet(ViewSet):
     def withdraw(self, request):
         try:
             data = TransactionSerializer(
-                data=request    .data
+                data=request.data
             )
 
             if data.is_valid():
-
                 saved_account = make_withdraw(
                     validate_data=data.validated_data
                 )
