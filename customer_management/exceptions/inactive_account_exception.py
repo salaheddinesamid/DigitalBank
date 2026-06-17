@@ -1,0 +1,4 @@
+
+
+class InactiveBankAccountException(Exception):
+    pass
