@@ -1,6 +1,7 @@
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import action
+from rest_framework.throttling import UserRateThrottle
 from rest_framework.viewsets import ViewSet
 
 # Import services
@@ -21,7 +22,7 @@ from DigitalBank.security.permissions import IsCustomer
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AccountTransactionViewSet(ViewSet):
-    @action(detail=False, methods=["post"], permission_classes=[IsCustomer])
+    @action(detail=False, methods=["post"], permission_classes=[IsCustomer], throttle_classes=[UserRateThrottle])
     def deposit(self, request):
         try:
             data = TransactionSerializer(
