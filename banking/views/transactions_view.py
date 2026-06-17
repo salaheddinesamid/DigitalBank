@@ -39,6 +39,14 @@ class AccountTransactionViewSet(ViewSet):
                     status=status.HTTP_200_OK
                 )
             return Response(status=status.HTTP_502_BAD_GATEWAY)
+
+        except InsufficientBalanceException as e:
+            return Response(
+                data={
+                    "error" : str(e)
+                },
+                status=status.HTTP_409_CONFLICT
+            )
         except ValueError as e:
             return Response(
                 data={
@@ -108,6 +116,13 @@ class AccountTransactionViewSet(ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        except InsufficientBalanceException as e:
+            return Response(
+                data={
+                    "error" : str(e)
+                },
+                status=status.HTTP_409_CONFLICT
+            )
         except ValueError as e:
             return Response(
                 {"error": str(e)},
