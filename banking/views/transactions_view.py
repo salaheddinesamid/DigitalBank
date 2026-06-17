@@ -8,7 +8,10 @@ from rest_framework.viewsets import ViewSet
 from ..services.deposit_service import make_deposit
 from ..services.withdraw_service import make_withdraw
 from ..services.transfer_service import make_internal_transfer
+
+# Import exceptions
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
+from ..exceptions.blocked_account_exception import AccountBlockedException
 
 # Import serializers
 from ..serializers.account_opening_serializer import NewAccountDetailsSerializer
@@ -87,6 +90,14 @@ class AccountTransactionViewSet(ViewSet):
                     "error": str(e)
                 },
                 status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except AccountBlockedException as e:
+            return Response(
+                data={
+                    "error": str(e)
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
     @action(detail=False, methods=["post"], permission_classes = [IsCustomer])
