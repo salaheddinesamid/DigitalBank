@@ -1,6 +1,9 @@
 from ..models import BankAccount, TransactionRecord
+
+# Import exceptions
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
 from customer_management.exceptions.inactive_account_exception import InactiveBankAccountException
+from ..exceptions.blocked_account_exception import AccountBlockedException
 from django.db import transaction
 
 
@@ -16,6 +19,10 @@ def make_withdraw(validate_data):
         # If the account is inactive, raise an exception
         if bank_account.status == "INACTIVE":
             raise InactiveBankAccountException('This account is inactive, please activate your account and try again')
+
+        # Check if the account is not blocked:
+        if bank_account.status == "BLOCKED":
+            raise AccountBlockedException("This account is blocked, you cannot perform any operation.")
 
         # If the account is out of balance, raise an exception
         if validate_data['amount'] > bank_account.balance:

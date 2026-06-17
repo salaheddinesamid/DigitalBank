@@ -1,6 +1,7 @@
 from ..models import BankAccount, TransactionRecord
 
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
+from ..exceptions.blocked_account_exception import AccountBlockedException
 from django.db import transaction
 
 from ..utils.check_account_limit import check_daily_limit
@@ -26,6 +27,9 @@ def make_internal_transfer(validated_data):
         if source_account.balance < validated_data['amount']:
             raise InsufficientBalanceException("The source account has insufficient balance")
 
+        # Check if the source account is not blocked
+        if source_account.status == "BLOCKED":
+            raise AccountBlockedException("This account is blocked, you cannot perform any operation")
         check_daily_limit(customer=source_account.customer, amount=validated_data['amount'], transaction_type="TRANSFER")
         # Decrease the source account's balance
         source_account.balance -= validated_data['amount']
