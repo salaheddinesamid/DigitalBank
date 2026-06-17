@@ -21,3 +21,7 @@ class HasRole(BasePermission):
 
 class IsCustomer(HasRole):
     allowed_roles = ["CUSTOMER"]
+
+
+class IsBanker(HasRole):
+    allowed_roles = ["BANKER"]
