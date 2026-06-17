@@ -3,11 +3,14 @@ from ..models import TransactionRecord
 
 
 class TransactionSerializer(serializers.Serializer):
-    account_number = serializers.CharField()
-    amount = serializers.FloatField()
+    amount = serializers.DecimalField(
+        max_digits=15,
+        decimal_places=2
+    )
 
 
 class TransactionDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = TransactionRecord
         fields = '__all__'
+
