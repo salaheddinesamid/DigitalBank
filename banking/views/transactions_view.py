@@ -29,7 +29,8 @@ class AccountTransactionViewSet(ViewSet):
             )
             if data.is_valid():
                 saved_account = make_deposit(
-                    data.validated_data
+                    data.validated_data,
+                    user=request.user
                 )
 
                 serializer = NewAccountDetailsSerializer(saved_account)
