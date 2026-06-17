@@ -13,6 +13,7 @@ class BankAccountType(models.TextChoices):
 class BankAccountStatus(models.TextChoices):
     ACTIVE = "ACTIVE", "Active"
     INACTIVE = "INACTIVE", "Inactive"
+    BLOCKED = "BLOCKED", "Blocked"
 
 
 class BankAccount(models.Model):
