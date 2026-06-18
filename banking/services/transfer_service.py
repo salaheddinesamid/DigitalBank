@@ -46,7 +46,8 @@ def make_internal_transfer(validated_data):
             type="TRANSFER",
             amount=validated_data['amount'],
             source_account=source_account,
-            destination_account=destination_account
+            destination_account=destination_account,
+            status="COMPLETED"
         )
 
         return transaction_record

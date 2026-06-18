@@ -19,7 +19,7 @@ def make_deposit(validated_data, user):
             type="DEPOSIT",
             amount=validated_data['amount'],
             destination_account=bank_account,
-            status="PENDING"
+            status="COMPLETED"
         )
 
         # Save the transaction record:

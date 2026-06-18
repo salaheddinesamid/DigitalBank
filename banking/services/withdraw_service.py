@@ -37,7 +37,7 @@ def make_withdraw(validate_data):
             type="WITHDRAW",
             amount=validate_data['amount'],
             source_account=bank_account,
-            status="PENDING"
+            status="COMPLETED"
         )
 
         # Save the transaction record
