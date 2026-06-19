@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'customer_management',
     'banking',
     'user_auth',
+    'audit'
 ]
 
 MIDDLEWARE = [

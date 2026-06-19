@@ -1,17 +1,21 @@
 from django.db import models
-from customer_management.models import Customer
+from customer_management.models import User
 
 
 # Create your models here.
 
 class AuditLog(models.Model):
-    customer = models.ForeignKey(
-        Customer,
+    user = models.ForeignKey(
+        User,
         on_delete=models.PROTECT
     )
 
     action = models.CharField(
         max_length=100
+    )
+
+    ip_address = models.CharField(
+        max_length=230
     )
 
     entity = models.CharField(
