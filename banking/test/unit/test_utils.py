@@ -41,3 +41,6 @@ class AccountNumberGeneratorTest(TestCase):
 
 class TransferLimitUtilsTest(TestCase):
     pass
+
+class TestGetIpAddress(TestCase):
+    pass

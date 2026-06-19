@@ -15,7 +15,9 @@ class AuditLog(models.Model):
     )
 
     ip_address = models.CharField(
-        max_length=230
+        max_length=230,
+        default=None,
+        null=True
     )
 
     entity = models.CharField(

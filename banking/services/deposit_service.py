@@ -1,8 +1,9 @@
 from django.db import transaction
 from ..models import BankAccount, TransactionRecord
+from audit.services.create_audit_log import create_audit_log
 
 
-def make_deposit(validated_data, user):
+def make_deposit(validated_data, user, ip_address):
     if validated_data['amount'] <= 0:
         raise ValueError("Deposit amount must be greater than 0")
 
@@ -24,5 +25,14 @@ def make_deposit(validated_data, user):
 
         # Save the transaction record:
         transaction_record.save()
+
+        # Create audit log:
+        create_audit_log(
+            user=bank_account.customer.user,
+            action=transaction_record.type,
+            entity="TransactionRecord",
+            entity_id=transaction_record.id,
+            ip_address=ip_address
+        )
 
     return bank_account

@@ -9,6 +9,8 @@ from ..services.deposit_service import make_deposit
 from ..services.withdraw_service import make_withdraw
 from ..services.transfer_service import make_internal_transfer
 
+from ..utils.get_user_ip import get_client_ip
+
 # Import exceptions
 from ..exceptions.insufficent_balance_exception import InsufficientBalanceException
 from ..exceptions.blocked_account_exception import AccountBlockedException
@@ -31,10 +33,14 @@ class AccountTransactionViewSet(ViewSet):
             data = TransactionSerializer(
                 data=request.data
             )
+            user_ip = get_client_ip(
+                request=request
+            )
             if data.is_valid():
                 saved_account = make_deposit(
                     data.validated_data,
-                    user=request.user
+                    user=request.user,
+                    ip_address=user_ip
                 )
 
                 serializer = NewAccountDetailsSerializer(saved_account)
